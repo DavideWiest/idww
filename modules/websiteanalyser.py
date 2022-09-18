@@ -3,8 +3,10 @@ import urllib.request
 import socket
 import urllib.error
 from modules.sys_helper import CLogger
+from urllib import request as urlrequest
 
-socket.setdefaulttimeout(30)
+
+socket.setdefaulttimeout(180)
 
 class ProxyChecker:
     def __init__(self):
@@ -12,7 +14,7 @@ class ProxyChecker:
 
     def is_bad_proxy(self, proxy):    
         try:
-            proxy_handler = urllib.request.ProxyHandler({'http': proxy})
+            proxy_handler = urllib.request.ProxyHandler({'https': proxy})
             opener = urllib.request.build_opener(proxy_handler)
             opener.addheaders = [('User-agent', 'Mozilla/5.0')]
             urllib.request.install_opener(opener)
@@ -24,6 +26,20 @@ class ProxyChecker:
             return True
         return False
 
+    def is_bad_proxy2(self, proxy):
+        try:
+            req = urlrequest.Request("https://google.com")
+            req.set_proxy(proxy, 'http')
+            response = urlrequest.urlopen(req)
+            # urllib.request.urlopen(
+            #     "https://google.com",
+            #     proxies={'http': proxy}
+            # )
+        except IOError:
+            return True
+        else:
+            return False
+
     def get_valid_proxies(self, max_proxies=float("inf"), print_status=True):
         with open("resources/proxies.csv", "r") as f:
             f = f.read().split("\n")
@@ -31,8 +47,8 @@ class ProxyChecker:
         proxylist = {}
         for index, proxydata in enumerate(f):
             url, port, a1, a2, a3 = proxydata.split(",")
-            if not self.is_bad_proxy(f"{url}:{port}") and index <= max_proxies:
-                proxylist[f"{url}:{port}"] = float(a2) * float(a3) / float(a1)
+            if not self.is_bad_proxy(f"http://{url}:{port}") and index <= max_proxies:
+                proxylist[f"http://{url}:{port}"] = float(a2) * float(a3) / float(a1)
 
         if print_status:
             self.cl.logprint(f"PROXIES CHECKED: {len(proxylist)} SUCCEEDED | {len(f)-len(proxylist)} FAILED")

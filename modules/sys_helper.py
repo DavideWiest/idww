@@ -19,8 +19,11 @@ class CLogger():
         with open("logs/current/stats.json", "r", encoding="utf-8") as f:
             stats = json.load(f)
 
-        if mode == "increment":
-            stats[var] += val
+        if var in stats:
+            if mode == "increment":
+                stats[var] += val
+            else:
+                stats[var] = val
         else:
             stats[var] = val
 
@@ -32,7 +35,7 @@ class CLogger():
             logfile = json.load(f)
 
         logfile[username] = errdict
-        
+
         with open(f"logs/current/account_errors.json", "w", encoding="utf-8") as f:
             json.dump(logfile, f, indent=4)
 

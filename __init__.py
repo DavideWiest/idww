@@ -1,0 +1,1 @@
+from idww import main

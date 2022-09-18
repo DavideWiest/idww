@@ -3,18 +3,17 @@ from rest_framework.decorators import api_view
 from api.api_backend import ApiBackend
 from api.api_organizer import successful_authentication, auth_error
 from .datamanager import UrlQueryManager, BadRequestError
-import os
-import sys
-import inspect
+# import os
+# import sys
+# import inspect
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir) 
+# currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+# parentdir = os.path.dirname(currentdir)
+# sys.path.insert(0, parentdir) 
 
 from main import ScraperShell
 
 ss = ScraperShell()
-
 ab = ApiBackend()
 
 @api_view(["GET"])

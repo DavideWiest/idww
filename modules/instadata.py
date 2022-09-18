@@ -1,5 +1,6 @@
 from instagrapi import Client
 from instagrapi.exceptions import RateLimitError, PleaseWaitFewMinutes, ClientConnectionError
+from requests.exceptions import ProxyError
 import time
 from modules.clientgetter import get_client
 from geopy.geocoders import Nominatim
@@ -31,6 +32,8 @@ class Account:
             raise LoginFailure_cl_Primary(f"for user {username} - {get_full_class_name(e)}")
         except (BadPassword, ReloginAttemptExceeded, SelectContactPointRecoveryForm, RecaptchaChallengeForm, FeedbackRequired):
             raise LoginFailure_cl_Secondary(f"for user {username} - {get_full_class_name(e)}")
+        except (ClientConnectionError, ProxyError):
+            raise
         except Exception as e:
             raise LoginFailure_cl_Generic(f"for user {username} - {get_full_class_name(e)}")
 
@@ -47,7 +50,7 @@ class InstaData:
         
         self.accounts_data = accounts_data
         self.USERMAX = usermax
-        self.SLEEP_TIME_ORIGINAL = self.SLEEP_TIME
+        self.SLEEP_TIME_ORIGINAL = sleep_time
         self.SLEEP_TIME = sleep_time / len(self.accounts_data)
         self.LONG_SLEEP_TIME = long_sleep_time
         
@@ -74,8 +77,8 @@ class InstaData:
         self.last_account = len(accounts_data)-1
     
     def login(self):
-        self.proxies = list(self.pc.get_valid_proxies(max_proxies=len(self.accounts_data)))
-        self.proxies = random.shuffle(self.proxies)
+        self.proxies = list(self.pc.get_valid_proxies())
+        random.shuffle(self.proxies)
         self.error_account_map = {}
         
         self.accounts = []
@@ -85,10 +88,25 @@ class InstaData:
             try:
                 acc_class = Account(user[0], user[1], self.proxies[(self.accounts_data.index(user) + 1) % len(self.proxies)])
                 self.accounts.append(acc_class)
+            except (ConnectionError, ClientConnectionError, ProxyError):
+                self.cl.logprint(f"PROXY {self.proxies[(self.accounts_data.index(user) + 1) % len(self.proxies)]} not working")
+                for proxy in self.proxies[len(self.accounts_data):]:
+                    try:
+                        acc_class = Account(user[0], user[1], proxy)
+                        self.accounts.append(acc_class)
+                    except (ConnectionError, ClientConnectionError, ProxyError):
+                        self.cl.logprint(f"PROXY {proxy} not working")
+                        self.proxies.remove(proxy)
+                        continue
+                    self.cl.print(self.proxies)
             except (LoginFailure_cl_Primary, LoginFailure_cl_Secondary) as e:
                 errorcount += 1
                 self.cl.logprint(e.message)
                 self.add_account_error(e)
+
+                crnt_acc = self.get_current_account()
+                self.cl.log_account_exit(crnt_acc.username, self.error_account_map[crnt_acc.username])
+
                 if len(self.accounts_data) < 2:
                     self.cl.logprint("Exiting program because the only given account failed on login")
                     self.cl.logstat("online_status", "offline")

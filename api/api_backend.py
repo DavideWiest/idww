@@ -3,7 +3,7 @@ import json
 
 class ApiBackend():
     def __init__(self):
-        self.mm = MongoManager
+        self.mm = MongoManager()
 
     def get_status():
         pass
@@ -11,9 +11,9 @@ class ApiBackend():
     def get_latest_logs(self, amount=50):
         ll = {}
         with open("logs/current/log.csv", "r", encoding="utf-8") as f:
-            ll["log"] = f.load().split("\n")[-amount:]
+            ll["log"] = f.read().split("\n")[-amount:]
         with open("logs/current/stdout.txt", "r", encoding="utf-8") as f:
-            ll["stdout"] = f.load().split("\n")[-amount:]
+            ll["stdout"] = f.read().split("\n")[-amount:]
         with open("logs/current/stats.json", "r", encoding="utf-8") as f:
             ll["stats"] = json.load(f)
         with open("logs/current/account_errors.json", "r", encoding="utf-8") as f:
@@ -44,7 +44,7 @@ class ApiBackend():
     
     def get_dbdstats(self):
         dbd = {}
-        dbd["database_stats"] = {
+        dbd = {
             "count_total": self.mm.pcol.estimated_document_count()
         }
 
@@ -65,24 +65,30 @@ class ApiBackend():
         }
 
         for var, filter_ in filter_var_map.items():
-            dbd["database_stats"][var+"_p"] = self.db_get_percentage(filter_)
-            dbd["database_stats"][var+"_t"] = dbd["database_stats"][var+"_p"] * dbd["database_stats"]["count_total"]
+            dbd[var+"_p"] = self.db_get_percentage(filter_)
+            dbd[var+"_t"] = dbd[var+"_p"] * dbd["count_total"]
 
         other_aggr = list(self.mm.pcol.aggregate([
             {"$sample": {"size": 1000}}, 
             {"$project": {"_id": 0, "base_infos": 1}}
         ]))
 
-        for acc in other_aggr:
-            if acc["base_infos.language"] in dbd["database_stats"]["langs"]:
-                dbd["database_stats"]["langs"][acc["base_infos.language"]] += 0.001
-            else:
-                dbd["database_stats"]["langs"][acc["base_infos.language"]] = 0.001
+        dbd["langs"] = {}
+        dbd["categories"] = {}
 
-            if acc["base_infos.category"] in dbd["database_stats"]["categories"]:
-                dbd["database_stats"]["categories"][acc["base_infos.category"]] += 0.001
+        for acc in other_aggr:
+            if "base_infos" not in acc:
+                continue
+
+            if acc["base_infos"]["language"] in dbd["langs"]:
+                dbd["langs"][acc["base_infos"]["language"]] += 0.001
             else:
-                dbd["database_stats"]["categories"][acc["base_infos.category"]] = 0.001
+                dbd["langs"][acc["base_infos"]["language"]] = 0.001
+
+            if acc["base_infos"]["category"] in dbd["categories"]:
+                dbd["categories"][acc["base_infos"]["category"]] += 0.001
+            else:
+                dbd["categories"][acc["base_infos"]["category"]] = 0.001
 
         return dbd
 
