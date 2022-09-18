@@ -1,0 +1,83 @@
+{
+    "insta_datamigrationdict": {
+        "id": "pk",
+        "username_normalized": "username",
+        "username_original": "username_original",
+        "full_name_normalized": "full_name",
+        "full_name_original": "full_name_original",
+        "description_normalized": "biography",
+        "description_original": "biography_original",
+        "profile_picture": "profile_pic_url",
+        "is_private": "is_private",
+        "is_verified": "is_verified",
+        "account_type": "account_type",
+        "interop_messaging_user_fbid": "interop_messaging_user_fbid"
+    },
+    "insta_datastatsmigrationdict": {
+        "follower_count": "follower_count",
+        "following_count": "following_count",
+        "media_count": "media_count",
+        "following_tag_count": "following_tag_count",
+        "total_igtv_videos": "total_igtv_videos"
+    },
+    "main_datamigration": {
+        "credentials": [
+            ["emails", "emails"],
+            ["domains", "domains"],
+            ["links", "links"],
+            ["phone_numbers", "phone_numbers"],
+            ["public_phone_country_code", "public_phone_country_code"]
+        ],
+        "base_infos": [
+            ["full_name", "full_name"],
+            ["ig_username", "username"],
+            ["language", "language"],
+            ["gender", "gender"],
+            ["is_business", "is_business"],
+            ["category", "category"],
+            ["potential_account_type", "account_type"]
+        ],
+        "location": [
+            ["address_street", "address_street"],
+            ["city_name", "city_name"],
+            ["zip", "zip"],
+            ["lat", "latitude"],
+            ["long", "longitude"],
+            ["media_latest_locations", "media_latest_locations"],
+            ["location_type", "location_type"]
+        ],
+        "additional_ig_data": [
+            ["hashtags", "hashtags"],
+            ["tagged_users", "tagged_users"],
+            ["lowlevel_keywords", "lowlevel_keywords"],
+            ["media_latest_locations", "media_latest_locations"],
+            ["media_latest_locations_license", "media_latest_locations_license"],
+            ["media_hashtags", "media_hashtags"],
+            ["can_hide_public_contacts", "can_hide_public_contacts"],
+            ["should_show_category", "should_show_category"],
+            ["should_show_public_contacts", "should_show_public_contacts"]
+        ]
+    },
+    "standalone_accepted_vars": [
+        ["insta_id", "pk"],
+        ["classification_level", "classification_level"],
+        ["category", "category"],
+        ["social_profiles", "social_profiles"],
+        ["populized", "populized"],
+        ["date_last_upserted_at", "date_last_upserted_at"],
+        ["applicable", "applicable"]
+    ],
+    "clear_empthy_string_fields": [
+        "address_street",
+        "city_name",
+        "public_phone_country_code",
+        "zip",
+        "category"
+    ],
+    "clear_zero_int_fields": [
+        "latitude",
+        "longitude",
+        "lat",
+        "lng"
+    ]
+}

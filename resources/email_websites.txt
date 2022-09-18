@@ -1,0 +1,8 @@
+gmail
+outlook
+aol
+icloud
+proton
+zoho
+yandex
+yahoo
