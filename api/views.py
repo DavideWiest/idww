@@ -44,9 +44,9 @@ def scraper_stats(request):
         return Response(auth_error)
     try:
         resp = ab.get_scraperstats()
-        resp["status"] = "ok"
+        resp["sstatus"] = "ok"
     except Exception as e:
-        resp = {"status": "error", "error": str(traceback.format_exc())}
+        resp = {"sstatus": "error", "error": str(traceback.format_exc())}
     return Response(resp)
 
 @api_view(["GET"])
@@ -55,9 +55,9 @@ def database_stats(request):
         return Response(auth_error)
     try:
         resp = ab.get_dbdstats()
-        resp["status"] = "ok"
+        resp["sstatus"] = "ok"
     except Exception as e:
-        resp = {"status": "error", "error": str(traceback.format_exc())}
+        resp = {"sstatus": "error", "error": str(traceback.format_exc())}
     return Response(resp)
 
 @api_view(["GET"])
@@ -66,7 +66,7 @@ def latest_logs(request):
         return Response(auth_error)
     try:
         resp = ab.get_latest_logs()
-        resp["status"] = "ok"
+        resp["sstatus"] = "ok"
     except Exception as e:
-        resp = {"status": "error", "error": str(traceback.format_exc())}
+        resp = {"sstatus": "error", "error": str(traceback.format_exc())}
     return Response(resp)

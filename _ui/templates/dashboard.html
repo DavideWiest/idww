@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ title }}{% endblock %}
+{% block header %}{{ title }}{% endblock %}
 
 {% block htmlcontents %}
 
-
+<div id="component" class="bg-white m-2 p-4 rounded-2xl drop-shadow-sm">
+    <p>Hello</p>
+    <form action="">
+        <input type="text" name="auth_token" id="auth_token">
+        <button type="button" onclick="do_next_scraper_step();">
+            <p id="scraper_action_button">Execute</p>
+        </button>
+    </form>
+</div>
 
 
 {% endblock %}
@@ -12,20 +21,36 @@
 {% block scripts %}
 
 <script>
-    var base_url = "{{ base_url }}" + "api"
-    function ApiCall(endpoint) {
-        var data = fetch(base_url + endpoint)
-        .then((response) => response.json());
-        return data
+    var base_url = "{{ base_url }}" + "api/"
+    var scraper_status = "";
+
+    function ApiCall(endpoint, auth_token) {
+        fetch(base_url + endpoint + "?auth_token=" + auth_token).then(response => 
+        response.json().then(data => ({
+            data: data,
+            status: response.status
+        })
+        ).then(res => {
+            var data = res.data;
+            console.log(data)
+            return data;
+        }));
     }
     function displayErrMsg(div, error_msg="An Error occured. Please try again.", responsive=false) {
-        // place error div into div
+        var hidden_compontents = document.querySelector("#hidden-components #error_message");
+        var errmsg = hidden_compontents.cloneNode(true);
+        div.appendChild(errmsg);
     }
 
 
     function dbd() {
-        var dataresp = ApiCall("/database_stats");
-        if (dataresp["status"] != "ok") {
+        var dataresp = ApiCall("info/database_stats");
+        if (do_return == true) {
+            return dataresp;
+        }
+        // var div = document.querySelector("");
+        if (dataresp.sstatus != "ok") {
+            
             displayErrMsg("dbd_div")
         } else {
             // parse data normally
@@ -33,48 +58,110 @@
 
     }
     function scraper_stats() {
-        var dataresp = ApiCall("/scraper_stats");
-        if (dataresp["status"] != "ok") {
+        var dataresp = ApiCall("info/scraper_stats");
+        if (do_return == true) {
+            return dataresp;
+        }
+        // var div = document.querySelector("");
+        if (dataresp.sstatus != "ok") {
+            
             displayErrMsg("scraper_status_div")
         } else {
+            console.log(dataresp)
             // parse data normally
         }
     }
     function latest_logs() {
-        var dataresp = ApiCall("/latest_logs");
-        if (dataresp["status"] != "ok") {
+        var dataresp = ApiCall("info/latest_logs");
+        scraper_status = dataresp.stats.status
+        if (do_return == true) {
+            return dataresp;
+        }
+        // var div = document.querySelector("");
+        if (dataresp.sstatus != "ok") {
+            
             displayErrMsg("latest_logs_div")
         } else {
+            console.log(dataresp)
             // parse data normally
         }
     }
     function init_scraper() {
-        var dataresp = ApiCall("/init_scraper");
-        if (dataresp["status"] != "ok") {
+        var dataresp = ApiCall("action/init_scraper");
+        if (do_return == true) {
+            return dataresp;
+        }
+        // var div = document.querySelector("");
+        if (dataresp.sstatus != "ok") {
+            
             displayErrMsg("init_scraper_div")
         } else {
+            console.log(dataresp)
             // parse data normally
         }
     }
     function start_scraper() {
-        var dataresp = ApiCall("/start_scraper");
-        if (dataresp["status"] != "ok") {
+        var dataresp = ApiCall("action/start_scraper");
+        if (do_return == true) {
+            return dataresp;
+        }
+        // var div = document.querySelector("");
+        if (dataresp.sstatus != "ok") {
+            
             displayErrMsg("start_scraper_div")
         } else {
+            console.log(dataresp)
             // parse data normally
         }
     }
-    function stop_scraper() {
-        var dataresp = ApiCall("/stop_scraper");
-        if (dataresp["status"] != "ok") {
+    function stop_scraper(do_return=false) {
+        var dataresp = ApiCall("action/stop_scraper");
+        console.log(dataresp)
+        if (do_return == true) {
+            return dataresp;
+        }
+        // var div = document.querySelector("");
+        if (dataresp.sstatus != "ok") {
             displayErrMsg("stop_scraper_div")
         } else {
+            console.log(dataresp)
             // parse data normally
         }
+    }
+
+    do_next_scraper_step() {
+        var dataresp = latest_logs();
+        var sstatus = datarersp.sstatus
+        
+        switch (sstatus) {
+            case "offline":
+            case "unknown":
+                var dataresp_next = init_scraper(true);
+            case "initialized": 
+                var dataresp_next = start_scraper(true);
+            case "running":
+                var dataresp_next = stop_scraper(true);
+            default:
+            var dataresp_next = {sstatus: "unknown"};
+        }
+
+        var scraper_exec_info = document.querySelector("#scraper_exec_info");
+        var return_text = "Status: " + dataresp_next.sstatus;
+        dataresp_next.hasOwnProperty("error");
+        ? return_text = return_text + " (Error: " + dataresp_next.error + ")" 
+        : return_text = return_text;
+        scraper_exec_info.innerText = return_text;
+
     }
     
 
-    update_dbd()
+    // dbd()
+    // scraper_stats()
+    // latest_logs()
+
+    console.log(dbd(true))
+    console.log(scraper_stats(true))
+    console.log(latest_logs(true))
 
 </script>
 

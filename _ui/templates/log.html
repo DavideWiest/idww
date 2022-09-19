@@ -1,17 +1,32 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ title }}{% endblock %}
+{% block header %}{{ title }}{% endblock %}
 
 {% block htmlcontents %}
 
-
+<div id="component" class="bg-white m-2 5 p-4 rounded-2xl drop-shadow-sm">
+    
+</div>
 
 
 {% endblock %}
 
 {% block scripts %}
 
+<script>
+    var base_url = "{{ base_url }}"
+    function ApiCall(endpoint) {
+        var data = fetch(base_url + endpoint)
+        .then((response) => response.json());
+        return data
+    }
+    function displayErrMsg(div, error_msg="An Error occured. Please try again.", responsive=false) {
+        // place error div into div
+    }
 
+    // fetch log data once, then listen webhook and update it there
+</script>
 
 
 {% endblock %}

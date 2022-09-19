@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +7,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,800&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400;1,500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="content">
+    <style>
+        * {
+            font-family: 'Nunito Sans', 'Roboto', 'Helvetica', sans-serif;
+        }
+        .code {
+            font-family: 'Fira Code', monospace;
+        }
+        a:hover {
+            cursor: pointer;
+        }
+    </style>
+
+    <nav class="p-5 bg-white-shadow md:flex md:item-center md:justify-between">
+        <div class="flex justify-between items-center z-[4]">
+            <span class="text-2xl">
+                Instadata
+            </span>
+            <span class="text-2xl cursor-pointer md:hidden block">
+                <img src="{% static 'menu.svg' %}" alt="Menu" class="w-8" onclick="showMobileMenu(this);">
+            </span>
+        </div>
+        <ul id="menulist" class="md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-white w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in-out duration-600">
+            <li id="menuitem" class="mx-4 my-6 md:my-0">
+                <a class="text-xl hover:text-cyan-500 duration-500" href="/ui/dashboard">
+                    Dashboard
+                </a>
+            </li>
+            <li id="menuitem" class="mx-4 my-6 md:my-0">
+                <a class="text-xl hover:text-cyan-500 duration-500" href="/ui/main-log">
+                    Haupt Log
+                </a>
+            </li>
+            <li id="menuitem" class="mx-4 my-6 md:my-0">
+                <a class="text-xl hover:text-cyan-500 duration-500" href="/ui/stdout-log">
+                    Stdout Log
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content bg-blue-100 min-h-screen px-3 py-5">
         {% block htmlcontents %}
         {% endblock %}
     </div>
+
+    <div id="hidden-components" class="hidden">
+        <div id="error_message" class="h-max w-max bg-red-200 p-3 m-2 rounded-3xl">
+            <p id="error_message_text" style="color: rgb(112, 9, 9);" class="font-semibold leading-none">
+                <img src="{% static 'close.png' %}" alt="Fehler:" class="w-5 inline-block">
+                Es ist ein Fehler aufgetreten. Bitte versuche es später noch einmal.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function showMobileMenu(e) {
+            let list = document.querySelector('#menulist')
+            e.name == 'menu' 
+            ? (e.name = "close", list.classList.add('top-[70px]'), list.classList.add('opacity-100'), list.classList.add('z-[2]')) 
+            : (e.name = 'menu', list.classList.remove('top-[70px]'), list.classList.add('opacity-100'), list.classList.remove('z-[2]'))
+
+        }
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll('img').forEach(function(img){
+                img.onerror = function(){this.style.display='none';};
+            })
+        });
+    </script>
     {% block scripts %}
     {% endblock %}
 

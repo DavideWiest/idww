@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     '_ui',
-    "api"
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +54,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'idww.urls'
+
+STATIC_URL = 'static/'
 
 TEMPLATES = [
     {

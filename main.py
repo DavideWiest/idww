@@ -72,22 +72,22 @@ class ScraperShell():
                     break
                 time.sleep(0.5)
             if self.successful_initialization not in (1, 1.0):
-                return {"status": "error", "error": "unknown error"}
+                return {"sstatus": "error", "error": "unknown error"}
 
             self.initialized = True
             self.cl.logstat("status", "initialized")
             return {"status": "ok"}
         except Exception as e:
             self.cl.logstat("status", "offline")
-            return {"status": "error", "error": str(traceback.format_exc())}
+            return {"sstatus": "error", "error": str(traceback.format_exc())}
 
     def start_scraper(self):
         if self.initialized:
             self.allowed_to_scrape = Value("d", 1)
             self.cl.logstat("status", "running")
-            return {"status": "ok"}
+            return {"sstatus": "ok"}
         else:
-            return {"status": "error", "error": "scraper not initialized"}
+            return {"sstatus": "error", "error": "scraper not initialized"}
 
     def stop_scraper(self):
         try:
@@ -96,6 +96,6 @@ class ScraperShell():
             self.cl.logstat("status", "offline")
         except Exception as e:
             self.cl.logstat("status", "unknown")
-            return {"status": "error", "error": str(traceback.format_exc())}
+            return {"sstatus": "error", "error": str(traceback.format_exc())}
 
 
