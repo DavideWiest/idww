@@ -33,10 +33,10 @@ def initialize_scraper(allowed_to_scrape, successful_initialization):
     lh = LocationHandler()
     dh = DataHandler(mm, ta, ls, lh)
 
+    trigger_new_process()
     id = InstaData(ACCOUNTS_DATA, USERMAX, SLEEP_TIME, LONG_SLEEP_TIME, ANALYZE_PREVENTION, mm, ta, ls, dh, pc)
     successful_initialization = Value("d", 0)
     print(5)
-    trigger_new_process()
 
     dt_new_process = datetime.now()
 

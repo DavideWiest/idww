@@ -12,6 +12,7 @@ from .datamanager import UrlQueryManager, BadRequestError
 # sys.path.insert(0, parentdir) 
 
 from main import ScraperShell
+import traceback
 
 ss = ScraperShell()
 ab = ApiBackend()
@@ -41,19 +42,31 @@ def stop_scraper(request):
 def scraper_stats(request):
     if not successful_authentication(request):
         return Response(auth_error)
-    resp = ab.get_scraperstats()
+    try:
+        resp = ab.get_scraperstats()
+        resp["status"] = "ok"
+    except Exception as e:
+        resp = {"status": "error", "error": str(traceback.format_exc())}
     return Response(resp)
 
 @api_view(["GET"])
 def database_stats(request):
     if not successful_authentication(request):
         return Response(auth_error)
-    resp = ab.get_dbdstats()
+    try:
+        resp = ab.get_dbdstats()
+        resp["status"] = "ok"
+    except Exception as e:
+        resp = {"status": "error", "error": str(traceback.format_exc())}
     return Response(resp)
 
 @api_view(["GET"])
 def latest_logs(request):
     if not successful_authentication(request):
         return Response(auth_error)
-    resp = ab.get_latest_logs()
+    try:
+        resp = ab.get_latest_logs()
+        resp["status"] = "ok"
+    except Exception as e:
+        resp = {"status": "error", "error": str(traceback.format_exc())}
     return Response(resp)

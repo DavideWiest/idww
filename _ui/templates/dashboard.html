@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block htmlcontents %}
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    var base_url = "{{ base_url }}" + "api"
+    function ApiCall(endpoint) {
+        var data = fetch(base_url + endpoint)
+        .then((response) => response.json());
+        return data
+    }
+    function displayErrMsg(div, error_msg="An Error occured. Please try again.", responsive=false) {
+        // place error div into div
+    }
+
+
+    function dbd() {
+        var dataresp = ApiCall("/database_stats");
+        if (dataresp["status"] != "ok") {
+            displayErrMsg("dbd_div")
+        } else {
+            // parse data normally
+        }
+
+    }
+    function scraper_stats() {
+        var dataresp = ApiCall("/scraper_stats");
+        if (dataresp["status"] != "ok") {
+            displayErrMsg("scraper_status_div")
+        } else {
+            // parse data normally
+        }
+    }
+    function latest_logs() {
+        var dataresp = ApiCall("/latest_logs");
+        if (dataresp["status"] != "ok") {
+            displayErrMsg("latest_logs_div")
+        } else {
+            // parse data normally
+        }
+    }
+    function init_scraper() {
+        var dataresp = ApiCall("/init_scraper");
+        if (dataresp["status"] != "ok") {
+            displayErrMsg("init_scraper_div")
+        } else {
+            // parse data normally
+        }
+    }
+    function start_scraper() {
+        var dataresp = ApiCall("/start_scraper");
+        if (dataresp["status"] != "ok") {
+            displayErrMsg("start_scraper_div")
+        } else {
+            // parse data normally
+        }
+    }
+    function stop_scraper() {
+        var dataresp = ApiCall("/stop_scraper");
+        if (dataresp["status"] != "ok") {
+            displayErrMsg("stop_scraper_div")
+        } else {
+            // parse data normally
+        }
+    }
+    
+
+    update_dbd()
+
+</script>
+
+
+{% endblock %}

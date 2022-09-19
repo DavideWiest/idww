@@ -16,10 +16,11 @@ from instagrapi.exceptions import (BadPassword, ReloginAttemptExceeded, Challeng
 from modules.sys_helper import get_full_class_name, CLogger, LoginFailure_cl_Primary, LoginFailure_cl_Secondary, LoginFailure_cl_Generic, LoginFailure_cl2_Secondary, LoginFailure_cl2_Generic
 
 class Account:
-    def __init__(self, username, password, proxy):
+    def __init__(self, username, password, proxy=""):
         self.username = username
         self.password = password
         self.proxy = proxy
+        
 
         try:
             if proxy != "":
@@ -86,7 +87,10 @@ class InstaData:
         for user in self.accounts_data:
             self.error_account_map[user[0]] = {"counter": 0, "errors": []}
             try:
-                acc_class = Account(user[0], user[1], self.proxies[(self.accounts_data.index(user) + 1) % len(self.proxies)])
+                if self.proxies != []:
+                    acc_class = Account(user[0], user[1], self.proxies[(self.accounts_data.index(user) + 1) % len(self.proxies)])
+                else:
+                    acc_class = Account(user[0], user[1], "")
                 self.accounts.append(acc_class)
             except (ConnectionError, ClientConnectionError, ProxyError):
                 self.cl.logprint(f"PROXY {self.proxies[(self.accounts_data.index(user) + 1) % len(self.proxies)]} not working")
