@@ -29,7 +29,7 @@ class Account:
                 self.cl = Client()
             self.cl.login(username, password)
             self.cl.user_info(random.choice(["41004775496", "4344434517", "49305214700"]))
-        except (RateLimitError, PleaseWaitFewMinutes) as e:
+        except (RateLimitError, PleaseWaitFewMinutes, ChallengeRequired, EOFError) as e:
             raise LoginFailure_cl_Primary(f"for user {username} - {get_full_class_name(e)}")
         except (BadPassword, ReloginAttemptExceeded, SelectContactPointRecoveryForm, RecaptchaChallengeForm, FeedbackRequired):
             raise LoginFailure_cl_Secondary(f"for user {username} - {get_full_class_name(e)}")
@@ -63,19 +63,19 @@ class InstaData:
         self.ls = ls
         self.dh = dh
         self.pc = pc
-        self.cl = CLogger()
+        self._cl = CLogger()
 
+        self.last_account = len(accounts_data)-1
         self.login()
         
         self.initialization_time = (datetime.now().strftime('%d-%m-%Y, %H:%M:%S'), datetime.now())
-        self.cl.logstat("initialization_time", self.initialization_time[0])
-        self.cl.logstat("online_status", "online")
+        self._cl.logstat("initialization_time", self.initialization_time[0])
+        self._cl.logstat("online_status", "online")
         
         self.locator = LocationHandler()
         self.locator.set_proxies(self.proxies)
         self.locator.login()
 
-        self.last_account = len(accounts_data)-1
     
     def login(self):
         self.proxies = list(self.pc.get_valid_proxies())
@@ -93,30 +93,32 @@ class InstaData:
                     acc_class = Account(user[0], user[1], "")
                 self.accounts.append(acc_class)
             except (ConnectionError, ClientConnectionError, ProxyError):
-                self.cl.logprint(f"PROXY {self.proxies[(self.accounts_data.index(user) + 1) % len(self.proxies)]} not working")
+                self._cl.logprint(f"PROXY {self.proxies[(self.accounts_data.index(user) + 1) % len(self.proxies)]} not working")
                 for proxy in self.proxies[len(self.accounts_data):]:
                     try:
                         acc_class = Account(user[0], user[1], proxy)
                         self.accounts.append(acc_class)
                     except (ConnectionError, ClientConnectionError, ProxyError):
-                        self.cl.logprint(f"PROXY {proxy} not working")
+                        self._cl.logprint(f"PROXY {proxy} not working")
                         self.proxies.remove(proxy)
                         continue
-                    self.cl.print(self.proxies)
-            except (LoginFailure_cl_Primary, LoginFailure_cl_Secondary) as e:
+                    self._cl.print(self.proxies)
+            except (LoginFailure_cl_Primary, LoginFailure_cl_Secondary, LoginFailure_cl2_Secondary) as e:
                 errorcount += 1
-                self.cl.logprint(e.message)
+                self._cl.logprint(e.message)
                 self.add_account_error(e)
 
                 crnt_acc = self.get_current_account()
-                self.cl.log_account_exit(crnt_acc.username, self.error_account_map[crnt_acc.username])
+                self._cl.log_account_exit(crnt_acc.username, self.error_account_map[crnt_acc.username])
 
                 if len(self.accounts_data) < 2:
-                    self.cl.logprint("Exiting program because the only given account failed on login")
-                    self.cl.logstat("online_status", "offline")
+                    self._cl.logprint("Exiting program because the only given account failed on login")
+                    self._cl.logstat("online_status", "offline")
                     sys.exit(0)
+            # except (LoginFailure_cl_Generic, LoginFailure_cl2_Generic) as e:
+            #     self._cl.logprint(e.message)
 
-        self.cl.logprint(f"LOGIN COMPLETED: {len(self.accounts_data) - errorcount} SUCCEEDED | {errorcount} FAILED")
+        self._cl.logprint(f"LOGIN COMPLETED: {len(self.accounts_data) - errorcount} SUCCEEDED | {errorcount} FAILED")
         
     def cl(self):
         self.last_account += 1
@@ -135,9 +137,9 @@ class InstaData:
         crnt_acc = self.get_current_account()
         if self.error_account_map[crnt_acc.username]["counter"] > 0:
             self.error_account_map[crnt_acc.username]["counter"] -= 1
-        lastitem = list(self.error_account_map[crnt_acc.username]["errors"])[-1]
-
-        del self.error_account_map[crnt_acc.username]["errors"][lastitem]
+        # lastitem = list(self.error_account_map[crnt_acc.username]["errors"])[-1]
+        if self.error_account_map != []:
+            del self.error_account_map[crnt_acc.username]["errors"][0]
 
     def add_account_error(self, e):
         crnt_acc = self.get_current_account()
@@ -147,12 +149,12 @@ class InstaData:
         self.error_account_map[crnt_acc.username]["counter"] += 1
 
         if self.error_account_map[crnt_acc.username]["counter"] >= 5:
-            self.cl.log_account_exit(crnt_acc.username, self.error_account_map[crnt_acc.username])
+            self._cl.log_account_exit(crnt_acc.username, self.error_account_map[crnt_acc.username])
             del self.accounts[self.last_account]
             self.SLEEP_TIME = self.SLEEP_TIME_ORIGINAL / len(self.accounts)
             if self.accounts_data == []:
-                self.cl.logprint("Exiting program because the only remaining account failed during scraping")
-                self.cl.logstat("online_status", "offline")
+                self._cl.logprint("Exiting program because the only remaining account failed during scraping")
+                self._cl.logstat("online_status", "offline")
                 sys.exit(0)
 
     def adduser(self, id):
@@ -229,11 +231,11 @@ class InstaData:
                 if self.SLEEP_TIME != 0:
                     time.sleep(self.SLEEP_TIME / 4)
             except TypeError as e:
-                self.cl.logprint("TYPEERROR IN get_mediadata")
-                self.cl.logprint(traceback.format_exc())
+                self._cl.logprint("TYPEERROR IN get_mediadata")
+                self._cl.logprint(traceback.format_exc())
             except Exception as e:
-                self.cl.logprint(f"ERROR IN get_mediadata")
-                self.cl.logprint(traceback.format_exc())
+                self._cl.logprint(f"ERROR IN get_mediadata")
+                self._cl.logprint(traceback.format_exc())
 
         return locations, hashtags, textdata
 
@@ -242,7 +244,7 @@ class InstaData:
             subfollowers = self.cl().user_followers(userid, amount=100)
             self.pop_account_error()
         except ClientConnectionError as e:
-            self.cl.logprint("ERROR IN expandreach: Connectionerror: skipping user")
+            self._cl.logprint("ERROR IN expandreach: Connectionerror: skipping user")
             self.add_account_error(e)
             return {}
         subfollowersdict = {}
@@ -268,7 +270,7 @@ class InstaData:
         totaluserlist = {}
         layer = 1
 
-        self.cl.logprint("SCRAPER STARTING")
+        self._cl.logprint("SCRAPER STARTING")
 
         totaluserlist = self.get_first_layer(gfl_filter, gfl_max_amount)
 
@@ -289,37 +291,37 @@ class InstaData:
                             func_status = "SUCCESS"
                             self.pop_account_error()
                         except KeyboardInterrupt:
-                            self.cl.logprint("PROGRAM ENDED THROUGH C^ INPUT")
-                            self.cl.logstat("online_status", "offline")
+                            self._cl.logprint("PROGRAM ENDED THROUGH C^ INPUT")
+                            self._cl.logstat("online_status", "offline")
                             sys.exit(0)
                         except (PleaseWaitFewMinutes, RateLimitError) as e:
-                            self.cl.logprint("ERROR IN adduser: Program was ratelimited - retry in some hours")
-                            self.cl.logprint(traceback.format_exc())
+                            self._cl.logprint("ERROR IN adduser: Program was ratelimited - retry in some hours")
+                            self._cl.logprint(traceback.format_exc())
                             func_status = "RTLMTERR"
                             self.add_account_error(e)
                         except (BadPassword, ReloginAttemptExceeded, LoginRequired, ClientError, ClientLoginError, ClientCookieExpiredError, ClientLoginRequiredError) as e:
-                            self.cl.logprint("ERROR IN adduser")
-                            self.cl.logprint(traceback.format_exc())
+                            self._cl.logprint("ERROR IN adduser")
+                            self._cl.logprint(traceback.format_exc())
                             func_status = "INT_ERR"
                             self.add_account_error(e)
                         except ChallengeRequired as e:
-                            self.cl.logprint("ERROR IN adduser: Challenge required.")
-                            self.cl.logprint(traceback.format_exc())
+                            self._cl.logprint("ERROR IN adduser: Challenge required.")
+                            self._cl.logprint(traceback.format_exc())
                             func_status = "CLG_ERR"
                             self.add_account_error(e)
                         except Exception as e:
-                            self.cl.logprint("ERROR IN adduser")
-                            self.cl.logprint(traceback.format_exc())
+                            self._cl.logprint("ERROR IN adduser")
+                            self._cl.logprint(traceback.format_exc())
                             func_status = "INT_ERR"
                             self.add_account_error(e)
                         
                         end = time.time()
 
-                        self.cl.logstat("running_time", str(timedelta(self.initialization_time[1], datetime.now())))
+                        self._cl.logstat("running_time", str(time.strftime('%Hh %Mm %Ss', time.gmtime((datetime.now() - self.initialization_time[1]).total_seconds()))))
                         if func_status == "SUCCESS":
-                            self.cl.logstat("profiles_scraped_successfully", 1, "increment")
+                            self._cl.logstat("profiles_scraped_successfully", 1, "increment")
                         else:
-                            self.cl.logstat("profiles_scraped_unsuccessfully", 1, "increment")
+                            self._cl.logstat("profiles_scraped_unsuccessfully", 1, "increment")
 
                         if use_log:
                             with open("logs/current/log.csv", "a", encoding="utf-8") as f:
@@ -336,7 +338,7 @@ class InstaData:
                         if self.sleep_midnights[0]:
                             dt_now = datetime.now()
                             if dt_now.hour == 23 and dt_now.minute >= 55:
-                                self.cl.logprint(f"----> GOING INTO MIDNIGHT SLEEP MODE FOR " + time.strftime('%Hh %Mm %Ss', time.gmtime(self.sleep_midnights[1])) + datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
+                                self._cl.logprint(f"----> GOING INTO MIDNIGHT SLEEP MODE FOR " + time.strftime('%Hh %Mm %Ss', time.gmtime(self.sleep_midnights[1])) + datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
                                 with open("logs/current/log.csv", "a", encoding="utf-8") as f:
                                     f.write("\n" + "MIDNIGHT_SLEEP_MODE" + "," + "," +  "," + datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "," + time.strftime('%Hh %Mm %Ss', time.gmtime(self.sleep_midnights[1])))
                                 
@@ -348,7 +350,7 @@ class InstaData:
                         if self.LONG_SLEEP_TIME != () and not slept_once:
                             if random.randrange(1750) == 69:
                                 sleep_time = random.randrange(self.LONG_SLEEP_TIME[0], self.LONG_SLEEP_TIME[1])
-                                self.cl.logprint(f"----> GOING INTO LONG SLEEP MODE FOR " + time.strftime('%Hh %Mm %Ss', time.gmtime(sleep_time)) + datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
+                                self._cl.logprint(f"----> GOING INTO LONG SLEEP MODE FOR " + time.strftime('%Hh %Mm %Ss', time.gmtime(sleep_time)) + " " + datetime.now().strftime("%d-%m-%Y, %H:%M:%S"))
                                 with open("logs/current/log.csv", "a", encoding="utf-8") as f:
                                     f.write("\n" + "LONG_SLEEP_MODE" + "," + "," +  "," + datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "," + time.strftime('%Hh %Mm %Ss', time.gmtime(sleep_time)))
                                 
@@ -356,7 +358,7 @@ class InstaData:
 
                     
                 if print_info:
-                    self.cl.logprint(f"{followerid} of layer {layer} yielded {len(new_user_ids)} new users")
+                    self._cl.logprint(f"{followerid} of layer {layer} yielded {len(new_user_ids)} new users")
 
                 if len(totaluserlist) >= self.USERMAX:
                     breakwhile = True
@@ -365,7 +367,7 @@ class InstaData:
             if breakwhile:
                 break
 
-            self.cl.logprint(f"ADDING SCRAPING LAYER - NEXT LAYER: {layer+1}")
+            self._cl.logprint(f"ADDING SCRAPING LAYER - NEXT LAYER: {layer+1}")
             with open("logs/current/log.csv", "a", encoding="utf-8") as f:
                 f.write("\n" + "ADDING_LAYER:" + str(layer+1) + "," + "," +  "," + datetime.now().strftime("%d-%m-%Y %H:%M:%S") + ",")
 

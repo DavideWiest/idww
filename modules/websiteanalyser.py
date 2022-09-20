@@ -45,6 +45,9 @@ class ProxyChecker:
             f = f.read().split("\n")
         
         proxylist = {}
+        if f in ([], "", [""]):
+            return proxylist
+        
         for index, proxydata in enumerate(f):
             url, port, a1, a2, a3 = proxydata.split(",")
             if not self.is_bad_proxy(f"http://{url}:{port}") and index <= max_proxies:

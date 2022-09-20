@@ -18,6 +18,12 @@ ss = ScraperShell()
 ab = ApiBackend()
 
 @api_view(["GET"])
+def validate_token(request):
+    if not successful_authentication(request):
+        return Response(auth_error)
+    return Response({"sstatus": "ok"})
+
+@api_view(["GET"])
 def initialize_scraper(request):
     if not successful_authentication(request):
         return Response(auth_error)
@@ -70,3 +76,5 @@ def latest_logs(request):
     except Exception as e:
         resp = {"sstatus": "error", "error": str(traceback.format_exc())}
     return Response(resp)
+
+    

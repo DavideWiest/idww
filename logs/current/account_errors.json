@@ -1,3 +1,11 @@
 {
-    
+    "seauser565": {
+        "counter": 1,
+        "errors": [
+            [
+                "modules.sys_helper.LoginFailure_cl_Primary",
+                "[20-09-2022, 19:42:05] Error for cl - for user stefaniebuddzusvoi1 - EOFError"
+            ]
+        ]
+    }
 }

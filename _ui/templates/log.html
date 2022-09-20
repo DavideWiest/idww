@@ -5,27 +5,189 @@
 
 {% block htmlcontents %}
 
-<div id="component" class="bg-white m-2 5 p-4 rounded-2xl drop-shadow-sm">
-    
+<div id="log-outer" class="bg-white m-2 5 p-4 rounded-2xl drop-shadow-sm">
+    <h1 id="log-header" class="text-2xl font-semibold">
+        {{ title }}
+    </h1>
+    <div class="flex">
+        <form action="" class="flex">
+            <div class="relative m-3 mb-5">
+                <input type="text" name="auth_token" id="auth_token" class="inline-block border border-neutral-300 rounded-xl p-2 w-full sm:w-auto" style="min-width: 10rem;">
+                <p id="auth_token_error_msg" class="text-red-500 absolute b-2 text-sm" style="min-width: 10rem;"></p>
+            </div>
+            <button type="button" onclick="loadContent()" class="inline-block m-3 p-2 px-3 bg-blue-200 rounded-xl bg-blue-600" style="min-width: 7rem;">
+                <p id="scraper_action_button"  class="font-bold text-white">Authentifizieren</p>
+            </button>
+        </form>
+    </div>
+</div>
+<div class="w-full bg-neutral-900 rounded-xl p-4 mt-4">
+    <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+              <table class="min-w-full">
+                <thead class="border-b">
+                  <tr>
+                    <th scope="col" class="text-sm font-medium text-white px-6 py-4 text-left">
+                      Name
+                    </th>
+                    <th scope="col" class="text-sm font-medium text-white px-6 py-4 text-left">
+                      Wert
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="log-inner">
+
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 
+<div id="hidden-log-component" class="hidden">
+    <table>
+        <tbody>
+            <tr id="log-msg-template" class="border-b border-gray-600 flex justify-start items-center">
+                <td id="log_msg_datetime" datetime="DATETIME" class="font-bold rounded-full py-1 px-2 mx-3 text-black bg-blue-200 px-6 py-4 whitespace-nowrap code inline-block">
+                    DATETIME
+                </td>
+                <td id="" class="text-sm text-gray-200 font-light px-6 py-4 whitespace-nowrap code">
+                    MESSAGE
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
 
 {% block scripts %}
 
 <script>
-    var base_url = "{{ base_url }}"
-    function ApiCall(endpoint) {
-        var data = fetch(base_url + endpoint)
-        .then((response) => response.json());
-        return data
+    var base_url = "{{ base_url }}" + "api/";
+    var logMessageContainer = [];
+    var auth_token = "";
+    var useInterval = false;
+
+    async function ApiCall(endpoint, auth_token) {
+        if (auth_token == null) {
+            return {sstatus: "error", error: "no auth_token given"}
+        }
+        var dataresp = await fetch(base_url + endpoint + "?auth_token=" + auth_token).then(response => 
+        response.json().then(data => ({
+            data: data,
+            status: response.status
+        })
+        ).then(res => {
+            var latest_scraped_data = res.data;
+            return latest_scraped_data;
+        }));
+        return dataresp
     }
+    
     function displayErrMsg(div, error_msg="An Error occured. Please try again.", responsive=false) {
-        // place error div into div
+        var hidden_compontents = document.querySelector("#hidden-components #error_message");
+        var errmsg = hidden_compontents.cloneNode(true);
+        div = document.getElementById(div);
+        div.appendChild(errmsg);
     }
 
-    // fetch log data once, then listen webhook and update it there
+    function getAuthToken(check_field=false) {
+        if (auth_token != "") {
+            return auth_token;
+        } else {
+            var e = document.getElementById("auth_token");
+            if (e.value == "" || e.value == null) {
+                e.classList.remove("border-neutral-300");
+                e.classList.add("border-red-500");
+                var e2 = document.getElementById("auth_token_error_msg");
+                e2.innerText = "Korrektes Token erforderlich";
+                return null;
+            } else {
+                return e.value;
+            }
+        }
+    }
+
+    function verifyCorrectToken() {
+        var e = document.getElementById("auth_token");
+        e.classList.remove("border-red-500");
+        e.classList.add("border-neutral-300");
+        var e2 = document.getElementById("auth_token_error_msg");
+        e2.innerText = "";
+
+        var dataresp = ApiCall("verify_token", getAuthToken(true));
+        dataresp.then(function(dataresp) {
+            if (dataresp.sstatus != "ok") {
+                e.classList.remove("border-neutral-600");
+                e.classList.add("border-red-600");
+                e2 = document.getElementById("auth_token_error_msg");
+                e2.classList.remove("text-green-600");
+                e2.classList.add("text-red-500");
+                e2.innerText = "Falsches Token";
+                return false;
+            } else {
+                e.classList.remove("border-neutral-600");
+                e.classList.add("border-green-600");
+                e2 = document.getElementById("auth_token_error_msg");
+                e2.classList.remove("text-red-500");
+                e2.classList.add("text-green-600");
+                e2.innerText = "Authentifizierung erfolgreich";
+                return true;
+            }
+        })
+        return dataresp;
+    }
+
+    function PopulateLogElems(logdata) {
+
+        var newMessageContainer = [];
+        console.log(logdata);
+        logdata["{{ wanted_log }}"].forEach(function (item, index) {
+            newMessageContainer.push(item[0])
+
+            // insert new messages
+            if (!logMessageContainer.includes(item[0])) {
+                logMessageContainer.push(item[0]);
+                var selem = document.getElementById("log-msg-template");
+                console.log(selem);
+                var elem = selem.cloneNode(true);
+                elem.innerHTML = elem.innerHTML.replaceAll("DATETIME", item[0]);
+                elem.innerHTML = elem.innerHTML.replaceAll("MESSAGE", item[1]);
+                var div = document.getElementById("log-inner");
+                div.appendChild(elem);
+            }
+        });
+        // remove old messages
+        document.querySelectorAll("#log-message").forEach(function(elem, index) {
+            if (!newMessageContainer.includes(elem.getAttribute("datetime"))) {
+                elem.remove();
+            }
+        })
+        
+    }
+
+    function loadContent() {
+        var ct = verifyCorrectToken();
+        ct.then(function(ct) {
+            if (ct == true || ct.sstatus == "ok") {
+                useInterval = true;
+            }
+        })
+    }
+
+    var intervalId = setInterval(function() {
+        var dataresp = ApiCall("info/latest_logs", getAuthToken());
+        if (useInterval == true) {
+            dataresp.then(function(dataresp) {
+                PopulateLogElems(dataresp);
+            })
+        }
+    }, 3000);
+
 </script>
 
 

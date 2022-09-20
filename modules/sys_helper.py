@@ -7,13 +7,13 @@ class CLogger():
 
     def logprint(self, string):
         with open("logs/current/stdout.txt", "a", encoding="utf-8") as f:
-            f.write("\n" + datetime.now().strftime("%d-%m-%Y %H:%M:%S") + " - " + string)
+            f.write("\n" + datetime.now().strftime("%d-%m-%Y %H:%M:%S") + " --- " + string + "\n!---!\n")
 
-    def getlogstat(self, var):
+    def getlogstat(self, var, default=None):
         with open("logs/current/stats.json", "r", encoding="utf-8") as f:
             stats = json.load(f)
         
-        return stats.get(var, None)
+        return stats.get(var, default)
 
     def logstat(self, var, val, mode="overwrite"):
         with open("logs/current/stats.json", "r", encoding="utf-8") as f:
@@ -26,6 +26,9 @@ class CLogger():
                 stats[var] = val
         else:
             stats[var] = val
+        
+        if var == "status" and val == "offline" and "online_status" in stats:
+            del stats["online_status"]
 
         with open("logs/current/stats.json", "w", encoding="utf-8") as f:
             json.dump(stats, f, indent=4)

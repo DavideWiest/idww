@@ -4,7 +4,7 @@ import shutil
 
 
 def trigger_new_process():
-    crnt_datetime = datetime.now().strftime('%d.%m.%Y_%H:%M:%S')
+    crnt_datetime = datetime.now().strftime('%d-%m-%Y_%H-%M-%S')
     archive_path = "logs/archived/" + crnt_datetime
     Path(archive_path).mkdir(parents=True, exist_ok=True)
 
@@ -17,7 +17,7 @@ def trigger_new_process():
         f.write("")
 
     with open("logs/current/stats.json", "w") as f:
-        f.write("{\n\n}")
+        f.write("{\n\"status\": \"offline\"\n}")
 
     with open("logs/current/account_errors.json", "w") as f:
         f.write("{\n\n}")

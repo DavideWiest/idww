@@ -6,13 +6,112 @@
 {% block htmlcontents %}
 
 <div id="component" class="bg-white m-2 p-4 rounded-2xl drop-shadow-sm">
-    <p>Hello</p>
-    <form action="">
-        <input type="text" name="auth_token" id="auth_token">
-        <button type="button" onclick="do_next_scraper_step();">
-            <p id="scraper_action_button">Execute</p>
+    <h3 class="text-2xl font-bold my-3 ml-4">Dashboard</h3>
+    <div class="flex">
+            <form action="" class="flex">
+                <div class="relative m-3 mb-5">
+                    <input type="text" name="auth_token" id="auth_token" class="inline-block border border-neutral-300 rounded-xl p-2 w-full sm:w-auto" style="min-width: 10rem;">
+                    <p id="auth_token_error_msg" class="text-red-500 absolute b-2 text-sm"></p>
+                </div>
+                <div>
+                    <button type="button" onclick="loadContent()" class="inline-block m-3 p-2 px-3 bg-blue-200 rounded-xl bg-blue-600" style="min-width: 7rem;">
+                        <p id="scraper_action_button" class="font-bold text-white">Authentifizieren</p>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+        <p id="scraper_exec_info">
+
+        </p>
+        <p id="scraper_error_info text-sm">
+
+        </p>
+    <form action="" class="inline-block">
+        <button type="button" id="exec_button" onclick="do_next_scraper_step()" class="inline-block m-3 p-2 px-3 bg-blue-200 rounded-xl bg-blue-600" style="min-width: 7rem;">
+            <p id="scraper_action_button" class="font-bold text-white">Ausführen</p>
         </button>
     </form>
+    <div id="stats">
+        <h3 class="text-2xl font-bold my-3 ml-4">Scraper Statistiken</h3>
+        
+<div class="flex flex-col">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <table class="min-w-full">
+          <thead class="border-b">
+            <tr>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Name
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Wert
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                Init. Zeitpunkt
+              </td>
+              <td id="initialization_time" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                
+              </td>
+            </tr>
+            <tr class="bg-white border-b">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                Laufzeit
+              </td>
+              <td id="running_time" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                
+              </td>
+            </tr>
+            <tr class="bg-white border-b">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                Erfolgreiches Scrapen
+              </td>
+              <td id="profiles_scraped_successfully" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                
+              </td>
+            </tr>
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  Unerfolgreiches Scrapen
+                </td>
+                <td id="profiles_scraped_unsuccessfully" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                  
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div id="errors">
+        <h3 class="text-2xl font-bold my-3 ml-4">Fehlermeldungen:</h3>
+        <div id="dbd_div">
+
+        </div>
+        <div id="scraper_status_div">
+
+        </div>
+        <div id="latest_logs_div">
+
+        </div>
+        <div id="init_scraper_div">
+
+        </div>
+        <div id="start_scraper_div">
+
+        </div>
+        <div id="stop_scraper_div">
+
+        </div>
+    </div>
 </div>
 
 
@@ -23,145 +122,311 @@
 <script>
     var base_url = "{{ base_url }}" + "api/"
     var scraper_status = "";
+    var auth_token = "";
+    var useInterval = false;
 
-    function ApiCall(endpoint, auth_token) {
-        fetch(base_url + endpoint + "?auth_token=" + auth_token).then(response => 
+    async function ApiCall(endpoint, auth_token) {
+        if (auth_token == null) {
+            return {sstatus: "error", error: "no auth_token given"}
+        }
+        var dataresp = await fetch(base_url + endpoint + "?auth_token=" + auth_token).then(response => 
         response.json().then(data => ({
             data: data,
             status: response.status
         })
         ).then(res => {
-            var data = res.data;
-            console.log(data)
-            return data;
+            var latest_scraped_data = res.data;
+            return latest_scraped_data;
         }));
+        return dataresp
     }
     function displayErrMsg(div, error_msg="An Error occured. Please try again.", responsive=false) {
         var hidden_compontents = document.querySelector("#hidden-components #error_message");
         var errmsg = hidden_compontents.cloneNode(true);
+        div = document.getElementById(div);
         div.appendChild(errmsg);
     }
-
-
-    function dbd() {
-        var dataresp = ApiCall("info/database_stats");
-        if (do_return == true) {
-            return dataresp;
-        }
-        // var div = document.querySelector("");
-        if (dataresp.sstatus != "ok") {
-            
-            displayErrMsg("dbd_div")
+    function getAuthToken(check_field=false) {
+        if (auth_token != "") {
+            return auth_token;
         } else {
-            // parse data normally
+            var e = document.getElementById("auth_token");
+            if (e.value == "" || e.value == null) {
+                e.classList.remove("border-neutral-300");
+                e.classList.add("border-red-500");
+                var e2 = document.getElementById("auth_token_error_msg");
+                e2.innerText = "Korrektes Token erforderlich";
+                return null;
+            } else {
+                return e.value;
+            }
         }
+    }
+
+    function verifyCorrectToken() {
+        var e = document.getElementById("auth_token");
+        e.classList.remove("border-red-500");
+        e.classList.add("border-neutral-300");
+        var e2 = document.getElementById("auth_token_error_msg");
+        e2.innerText = "";
+
+        var dataresp = ApiCall("verify_token", getAuthToken(true));
+        dataresp.then(function(dataresp) {
+            if (dataresp.sstatus != "ok") {
+                e.classList.remove("border-neutral-600");
+                e.classList.add("border-red-600");
+                e2 = document.getElementById("auth_token_error_msg");
+                e2.classList.remove("text-green-600");
+                e2.classList.add("text-red-500");
+                e2.innerText = "Falsches Token";
+                return false;
+            } else {
+                e.classList.remove("border-neutral-600");
+                e.classList.add("border-green-600");
+                e2 = document.getElementById("auth_token_error_msg");
+                e2.classList.remove("text-red-500");
+                e2.classList.add("text-green-600");
+                e2.innerText = "Authentifizierung erfolgreich";
+                return true;
+            }
+        })
+        return dataresp;
+    }
+    
+    function dbd() {
+        var dataresp = ApiCall("info/database_stats", getAuthToken());
+        dataresp.then(function(dataresp) {
+            // var div = document.querySelector("");
+            if (dataresp.sstatus != "ok") {
+                displayErrMsg("dbd_div")
+            } else {
+                // parse data normally
+            }
+        })
 
     }
     function scraper_stats() {
-        var dataresp = ApiCall("info/scraper_stats");
-        if (do_return == true) {
-            return dataresp;
-        }
-        // var div = document.querySelector("");
-        if (dataresp.sstatus != "ok") {
-            
-            displayErrMsg("scraper_status_div")
-        } else {
-            console.log(dataresp)
-            // parse data normally
-        }
+        var dataresp = ApiCall("info/scraper_stats", getAuthToken());
+        dataresp.then(function(dataresp) {
+            // var div = document.querySelector("");
+            if (dataresp.sstatus != "ok") {
+                
+                displayErrMsg("scraper_status_div")
+            } else {
+                dataresp
+                // parse data normally
+            }
+        })
     }
     function latest_logs() {
-        var dataresp = ApiCall("info/latest_logs");
-        scraper_status = dataresp.stats.status
-        if (do_return == true) {
-            return dataresp;
-        }
-        // var div = document.querySelector("");
-        if (dataresp.sstatus != "ok") {
-            
-            displayErrMsg("latest_logs_div")
-        } else {
-            console.log(dataresp)
-            // parse data normally
-        }
+        var dataresp = ApiCall("info/latest_logs", getAuthToken());
+        dataresp.then(function(dataresp) {
+            scraper_status = dataresp.stats.status
+            // var div = document.querySelector("");
+            if (dataresp.sstatus != "ok") {
+                displayErrMsg("latest_logs_div");
+            } else {
+                dataresp
+                // parse data normally
+                setScraperInfos(dataresp);
+            }
+        })
     }
     function init_scraper() {
-        var dataresp = ApiCall("action/init_scraper");
-        if (do_return == true) {
-            return dataresp;
-        }
-        // var div = document.querySelector("");
-        if (dataresp.sstatus != "ok") {
-            
-            displayErrMsg("init_scraper_div")
-        } else {
-            console.log(dataresp)
-            // parse data normally
-        }
+        var dataresp = ApiCall("action/init_scraper", getAuthToken());
+        dataresp.then(function(dataresp) {
+            // var div = document.querySelector("");
+            if (dataresp.sstatus != "ok") {
+                
+                displayErrMsg("init_scraper_div");
+            } else {
+                var e2 = document.getElementById("scraper_exec_info");
+                e2.innerText = "(Initilialisieren) " + e2.innerText;
+                dataresp
+                // parse data normally
+                setScraperInfosIndependantly(dataresp);
+            }
+        })
     }
     function start_scraper() {
-        var dataresp = ApiCall("action/start_scraper");
-        if (do_return == true) {
-            return dataresp;
-        }
-        // var div = document.querySelector("");
-        if (dataresp.sstatus != "ok") {
-            
-            displayErrMsg("start_scraper_div")
-        } else {
-            console.log(dataresp)
-            // parse data normally
-        }
+        var dataresp = ApiCall("action/start_scraper", getAuthToken());
+        dataresp.then(function(dataresp) {
+            // var div = document.querySelector("");
+            if (dataresp.sstatus != "ok") {
+                
+                displayErrMsg("start_scraper_div")
+            } else {
+                dataresp
+                // parse data normally
+                setScraperInfosIndependantly(dataresp);
+            }
+        })
     }
-    function stop_scraper(do_return=false) {
-        var dataresp = ApiCall("action/stop_scraper");
-        console.log(dataresp)
-        if (do_return == true) {
-            return dataresp;
-        }
-        // var div = document.querySelector("");
-        if (dataresp.sstatus != "ok") {
-            displayErrMsg("stop_scraper_div")
-        } else {
-            console.log(dataresp)
-            // parse data normally
-        }
+    function stop_scraper() {
+        var dataresp = ApiCall("action/stop_scraper", getAuthToken());
+        dataresp.then(function(dataresp) {
+            dataresp
+            // var div = document.querySelector("");
+            if (dataresp.sstatus != "ok") {
+                displayErrMsg("stop_scraper_div")
+            } else {
+                dataresp
+                // parse data normally
+                setScraperInfosIndependantly(dataresp);
+            }
+        })
     }
 
-    do_next_scraper_step() {
-        var dataresp = latest_logs();
-        var sstatus = datarersp.sstatus
-        
-        switch (sstatus) {
+    function setScraperInfos(log_stat) {
+        log_stat
+        var e = document.getElementById("exec_button");
+        var e2 = document.getElementById("scraper_exec_info");
+        var scraper_stats = log_stat.stats.status
+        switch (scraper_status) {
             case "offline":
+                e.innerText = "Scraper Intialisieren";
+                e2.innerText = "Offline";
+                break;
             case "unknown":
-                var dataresp_next = init_scraper(true);
+                e.innerText = "Scraper Intialisieren";
+                e2.innerText = "Unbekannt";
+                break;
             case "initialized": 
-                var dataresp_next = start_scraper(true);
+                e.innerText = "Scraper Starten";
+                e2.innerText = "Initialisiert";
+                var online_status = log_stat.stats.online_status
+                e2.innerText = e2.innerText + " - " + online_status
+                break;
             case "running":
-                var dataresp_next = stop_scraper(true);
+                e.innerText = "Scraper Stoppen";
+                e2.innerText = "Läuft";
+                var online_status = log_stat.stats.online_status
+                e2.innerText = e2.innerText + " - " + online_status
+                break;
             default:
-            var dataresp_next = {sstatus: "unknown"};
+                e.innerText = "Scraper-Exekution";
+                e2.innerText = "Unbekannt (2U)";
+                break;
+        }
+        e2.innerText = "Status: " + e2.innerText
+        if (log_stat.hasOwnProperty("error")) {
+            var e3 = document.getElementById("scraper_error_info");
+            e3.innerText = dataresp_next("error");
         }
 
-        var scraper_exec_info = document.querySelector("#scraper_exec_info");
-        var return_text = "Status: " + dataresp_next.sstatus;
-        dataresp_next.hasOwnProperty("error");
-        ? return_text = return_text + " (Error: " + dataresp_next.error + ")" 
-        : return_text = return_text;
-        scraper_exec_info.innerText = return_text;
+        fieldmap = ["running_time", "initialization_time", "profiles_scraped_successfully", "profiles_scraped_unsuccessfully"];
 
+        fieldmap.forEach(function(name, index) {
+            elem = document.getElementById(name);
+            elem.innerText = log_stat["stats"][name];
+        })
+    }
+
+    function setScraperInfosIndependantly() {
+        var dataresp = ApiCall("info/latest_logs", getAuthToken());
+        dataresp.then(function(dataresp) {
+            setScraperInfos(dataresp);
+        })  
+    }
+
+    function do_next_scraper_step() {
+        var dataresp = ApiCall("info/latest_logs", getAuthToken());
+        dataresp.then(function(dataresp) {
+            scraper_status = dataresp.stats.status
+            // var div = document.querySelector("");
+            if (dataresp.sstatus != "ok") {
+            } else {
+                dataresp
+                // parse data normally
+            }
+            switch (scraper_status) {
+                case "offline":
+                case "unknown":
+                    init_scraper();
+                    break;
+                case "initialized": 
+                    start_scraper();
+                    break;
+                case "running":
+                    stop_scraper();
+                    break;
+                default:
+                    init_scraper();
+                    break;
+            }
+            setScraperInfos(dataresp);
+            clearErrors()
+        })
     }
     
+    function loadContent() {
+        // dbd()
+        // scraper_stats()
+        // latest_logs()
+        
+        var ct = verifyCorrectToken();
+        var dataresp = ApiCall("info/latest_logs", getAuthToken());
+        dataresp.then(function(dataresp) {
+            dataresp
+            scraper_status = dataresp.stats.status;
+            scraper_status
+            if (dataresp.sstatus == "ok") {
+                var e = document.getElementById("exec_button");
+                var e2 = document.getElementById("scraper_exec_info");
+                switch (scraper_status) {
+                    case "offline":
+                        e.innerText = "Scraper Intialisieren";
+                        e2.innerText = "Offline";
+                        break;
+                    case "unknown":
+                        e.innerText = "Scraper Intialisieren";
+                        e2.innerText = "Unbekannt";
+                        break;
+                    case "initialized": 
+                        e.innerText = "Scraper Starten";
+                        e2.innerText = "Initialisiert";
+                        break;
+                    case "running":
+                        e.innerText = "Scraper Stoppen";
+                        e2.innerText = "Läuft";
+                        break;
+                    default:
+                        e.innerText = "Scraper Intialisieren";
+                        e2.innerText = "Unbekannt (Offline)";
+                        break;
+                }
+                e2.innerText = "Status: " + e2.innerText
 
-    // dbd()
-    // scraper_stats()
-    // latest_logs()
+            }
+        })
+        ct.then(function(ct) {
+            if (ct == true || ct.sstatus == "ok") {
+                useInterval = true;
+                clearErrors()
+                auth_token = getAuthToken(true);
+                dbd(true)
+                scraper_stats(true)
+                latest_logs(true)
+            }
+        })
+    }
 
-    console.log(dbd(true))
-    console.log(scraper_stats(true))
-    console.log(latest_logs(true))
+    function clearErrors() {
+        const array = ["dbd_div", "scraper_status_div", "latest_logs_div", "init_scraper_div", "start_scraper_div", "stop_scraper_div"]
+        array.forEach(function (item, index) {
+            var e = document.getElementById(item);
+            e.innerHTML = "";
+        });
+    }
+
+    var intervalId = setInterval(function() {
+        var dataresp = ApiCall("info/latest_logs", getAuthToken());
+        if (useInterval == true) {
+            dataresp.then(function(dataresp) {
+                setScraperInfosIndependantly(dataresp);
+            })
+        }
+    }, 3000);
 
 </script>
 

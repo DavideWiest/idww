@@ -13,7 +13,7 @@ def dashboard(request):
 def stdout_log(request):
     
     params = {
-        "webhook": "stdout_log"
+        "wanted_log": "stdout"
     }
 
     return render(request, "log.html", build_params("Stdout Log", params))
@@ -21,7 +21,7 @@ def stdout_log(request):
 def main_log(request):
     
     params = {
-        "webhook": "main_log"
+        "wanted_log": "log"
     }
 
     return render(request, "log.html", build_params("Main Log", params))

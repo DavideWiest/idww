@@ -5,11 +5,12 @@ from modules.datahandler import DataHandler, isValDomainWrapper
 from modules.instadata import InstaData
 from modules.websiteanalyser import ProxyChecker
 from api.api_organizer import trigger_new_process
-from multiprocessing import Process, Value
+from multiprocessing import Process, Value, Manager
 import time
 from datetime import datetime, timedelta
 import traceback
 from modules.sys_helper import CLogger
+from ctypes import c_char_p, c_wchar_p
 
 # username, password
 ACCOUNTS_DATA = [
@@ -24,7 +25,7 @@ GFL_FILTER = {"category": {"$nin": ["Artist", "Art", "Photographer", "Graphic De
 DB_RECONNECT_S = 3600 * 4
 # GFL_FILTER = {"category": {"$in" ["Entrepreneur", "Public figure", "Product/service", "Real Estate Agent", "Retail company", "Local business", "Digital Creator"]}}
 
-def initialize_scraper(allowed_to_scrape, successful_initialization):
+def initialize_scraper(allowed_to_scrape, critical_error_happened):# , error_msg, manager):
     mm = MongoManager()
     ta = TextAnalyser()
     vd = isValDomainWrapper()
@@ -32,52 +33,72 @@ def initialize_scraper(allowed_to_scrape, successful_initialization):
     pc = ProxyChecker()
     lh = LocationHandler()
     dh = DataHandler(mm, ta, ls, lh)
+    cl = CLogger()
+    try:
+        trigger_new_process()
+        id = InstaData(ACCOUNTS_DATA, USERMAX, SLEEP_TIME, LONG_SLEEP_TIME, ANALYZE_PREVENTION, mm, ta, ls, dh, pc)
+        cl.logstat("status", "initialized")
+    except Exception as e:
+        print(traceback.format_exc())
+        cl.logprint(traceback.format_exc())
+        cl.logstat("initilialization_error", traceback.format_exc())
+        critical_error_happened = Value("d", 1)
+        return
+    print("INITIALIZED")
 
-    trigger_new_process()
-    id = InstaData(ACCOUNTS_DATA, USERMAX, SLEEP_TIME, LONG_SLEEP_TIME, ANALYZE_PREVENTION, mm, ta, ls, dh, pc)
-    successful_initialization = Value("d", 0)
-    print(5)
-
-    dt_new_process = datetime.now()
-
-    while True and timedelta(datetime.now(), dt_new_process).total_seconds() > 3600 * 4:
-        if allowed_to_scrape in (1, 1.0):
-            print("allowed to scrape")
+    counter = 0
+    while True and counter <= 20:
+        counter += 1
+        if allowed_to_scrape in (1, 1.0, Value("d", 1)):
+            print("STARTING SCRAPING")
             break
         else:
-            print("not allowed to scrape")
+            print("SCRAPE READY")
             time.sleep(1)
 
-    id.make_list(use_log=True, db_reconnect=DB_RECONNECT_S, gfl_filter=GFL_FILTER)
-
-
+    try:
+        id.make_list(use_log=True, db_reconnect=DB_RECONNECT_S, gfl_filter=GFL_FILTER)
+    except:
+        cl.logprint(traceback.format_exc())
+        cl.logstat("status", "offline")
+        cl.logstat("runtime_error", traceback.format_exc())
 
 class ScraperShell():
     def __init__(self):
         self.cl = CLogger()
+        self.manager = Manager()
         self.allowed_to_scrape = Value("d", 0)
         self.cl.logstat("status", "offline")
         self.initialized = False
-        self.successful_initialization = Value("d", 0)
+        self.running = False
+        self.critical_error_happened = Value("d", 0)
+        
 
     def initialize_scraper(self):
+        if self.running:
+            a = self.stop_scraper() or None
+            if a != None:
+                return a
         try:
-            self.process = Process(target=initialize_scraper, args=(self.allowed_to_scrape, self.successful_initialization))
+            self.process = Process(target=initialize_scraper, args=(self.allowed_to_scrape, self.critical_error_happened))# , self.error_msg, self.manager))
             self.process.start()
             counter = 0
-            while counter <= 30:
-                print(counter)
+            self.cl.logstat("online_status", "initializing")
+            while counter <= 20:
+                print("INITIALIZING")
                 counter += 1
-                if self.successful_initialization in (1, 1.0):
+                if self.cl.getlogstat("status") == "initialized" or self.critical_error_happened in (1, 1.0, Value("d", 1)):
                     break
-                time.sleep(0.5)
-            if self.successful_initialization not in (1, 1.0):
-                return {"sstatus": "error", "error": "unknown error"}
+                time.sleep(1)
+
+            if self.critical_error_happened in (1, 1.0, Value("d", 1)) or self.cl.getlogstat("initilialization_error", "") != "":
+                return {"sstatus": "error", "error": self.cl.getlogstat("initilialization_error")}
 
             self.initialized = True
-            self.cl.logstat("status", "initialized")
+
             return {"status": "ok"}
         except Exception as e:
+            self.cl.logprint(traceback.format_exc())
             self.cl.logstat("status", "offline")
             return {"sstatus": "error", "error": str(traceback.format_exc())}
 
@@ -95,6 +116,7 @@ class ScraperShell():
             self.initialized = False
             self.cl.logstat("status", "offline")
         except Exception as e:
+            self.cl.logprint(traceback.format_exc())
             self.cl.logstat("status", "unknown")
             return {"sstatus": "error", "error": str(traceback.format_exc())}
 
