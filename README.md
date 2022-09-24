@@ -52,4 +52,4 @@ This is how the log.csv messages are sturctured: function status | user id | lay
 status and current time required
 
 ### Inquiries and Suggestions at **[davide.wiest2@gmail.com](mailto:davide.wiest2@gmail.com)**
-#### I am a Python (Web) Developer that can work on a freelance basis.
+#### I am a busy Python (Web) Developer that can work on a freelance basis.
