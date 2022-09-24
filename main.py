@@ -14,15 +14,15 @@ from ctypes import c_char_p, c_wchar_p
 
 # username, password
 ACCOUNTS_DATA = [
-    ["seauser565", "seauser656"],
-    ["stefaniebuddzusvoi1", "Y95L5VMME2"]
+    ["", ""]
 ]
 USERMAX = float("inf")
 SLEEP_TIME = 7
 LONG_SLEEP_TIME = (3600 * 0.5, 3600 * 2)
 ANALYZE_PREVENTION = ("sleep reconnect proxy_reconnect", 3600 * 2.5)
-GFL_FILTER = {"category": {"$nin": ["Artist", "Art", "Photographer", "Graphic Designer", "Visual Arts"]}}
 DB_RECONNECT_S = 3600 * 4
+GFL_FILTER = {}
+# GFL_FILTER = {"category": {"$nin": ["Artist", "Art", "Photographer", "Graphic Designer", "Visual Arts"]}}
 # GFL_FILTER = {"category": {"$in" ["Entrepreneur", "Public figure", "Product/service", "Real Estate Agent", "Retail company", "Local business", "Digital Creator"]}}
 
 def initialize_scraper(allowed_to_scrape, critical_error_happened):# , error_msg, manager):
