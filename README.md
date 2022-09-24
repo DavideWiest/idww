@@ -1,6 +1,7 @@
 # IDWW - The Web Wrapper of Instadata, a holistic Python Instagram Scraper
-### integrating with MongoDb, sitarealemail.com, nltk, locator (nominatim) instagram_private_api and instagrapi
-# What this Scraper can do:
+integrating with MongoDb, sitarealemail.com, nltk, locator (nominatim) instagram_private_api and instagrapi
+
+## What this Scraper can do:
 - #### Collecting Keywords. Hashtags, **E-Mail-Addresses**, **Phone-Numbers**
 - #### **Gender**, **Name** and **Language** analysis
 - #### **Scrape linktree Profiles** and capture more links, identify **custom linked websites** and **social profiles**
