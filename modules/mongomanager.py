@@ -5,21 +5,21 @@ from bson.json_util import dumps
 from datetime import datetime
 from modules.sys_helper import CLogger
 
-os.environ["con_db_username"] = "admin"
-os.environ["con_db_password"] = "yeet1234"
+os.environ["con_db_username"] = ""
+os.environ["con_db_password"] = ""
 
 os.environ["backup_con_db_username"] = ""
 os.environ["backup_con_db_password"] = ""
 
-HOST = "davidewiest.com"
-PORT = "27017"
-DB_NAME = "instadata"
+HOST = ""
+PORT = ""
+DB_NAME = ""
 
-BACKUP_HOST = None # "localhost"
-BACKUP_PORT = "27017"
-BACKUP_DB_NAME = "instadata_backup"
+BACKUP_HOST = None
+BACKUP_PORT = ""
+BACKUP_DB_NAME = ""
 
-primary_collection = backup_primary_collection = "main"
+primary_collection = backup_primary_collection = ""
 
 class MongoManager:
     def __init__(self, user=None, password=None, host=HOST, port=PORT, db_name=DB_NAME, backup_user=None, backup_password=None, backup_host=BACKUP_HOST, backup_port=BACKUP_PORT, backup_db_name=BACKUP_DB_NAME):
