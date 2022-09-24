@@ -1,4 +1,4 @@
-# IDWW - The Web Wrapper of Instadata
+# IDWW - The Web Wrapper of Instadata, a holistic Python Instagram Scraper
 ### integrating with MongoDb, sitarealemail.com, nltk, locator (nominatim) instagram_private_api and instagrapi
 # What this Scraper can do:
 - #### Collecting Keywords. Hashtags, **E-Mail-Addresses**, **Phone-Numbers**
@@ -33,6 +33,7 @@
 - download MongoDB on your pc and configure a mongodb link. This is the integrated, and strongly preferred Database
 - configure the Database variable in **modules/mongomanager.py**
 - visit sitarealemail.com and get an API Link. Paste this Api-key in the variable API_KEY in **modules/mailhandler.py**
+- configure your authorization token (which you will use to authenticate in the webapp) in **ww_resources/auth_token.txt**. You can use any string, but we encourage you to generate a UUID. Furthermore, to increase security, you can store it encrypted, or as a system variable.
 - populate ACCOUNTS_DATA with valid instagram accounts that will be used to access Instagram. Example: ("username123", "password321")
 - We highly encourage you to use **proxies** to increase privacy. Paste working proxies into the **resources/proxies.csv** file (a list of public proxies can be found inside resources/proxies3.csv) (see the structuring in resources/proxies2.csv: connection,port,latency,uptime,location_index. The last 3 values are used to sort the proxies by which is best. If you don't have this information, use 1 as default value)
 
