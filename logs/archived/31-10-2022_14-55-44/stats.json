@@ -1,0 +1,9 @@
+{
+    "status": "offline",
+    "initialization_time": "20-09-2022, 19:42:05",
+    "running_time": "00h 09m 09s",
+    "profiles_scraped_unsuccessfully": 50,
+    "profiles_scraped_successfully": 50,
+    "runtime_error": "Traceback (most recent call last):\n  File \"C:\\Users\\DavWi\\OneDrive\\Desktop\\projects\\idww\\main.py\", line 60, in initialize_scraper\n    id.make_list(use_log=True, db_reconnect=DB_RECONNECT_S, gfl_filter=GFL_FILTER)\n  File \"C:\\Users\\DavWi\\OneDrive\\Desktop\\projects\\idww\\modules\\instadata.py\", line 282, in make_list\n    new_user_ids = self.expandreach(followerid, layer)\n  File \"C:\\Users\\DavWi\\OneDrive\\Desktop\\projects\\idww\\modules\\instadata.py\", line 245, in expandreach\n    self.pop_account_error()\n  File \"C:\\Users\\DavWi\\OneDrive\\Desktop\\projects\\idww\\modules\\instadata.py\", line 142, in pop_account_error\n    del self.error_account_map[crnt_acc.username][\"errors\"][0]\nIndexError: list assignment index out of range\n",
+    "online_status": "initializing"
+}

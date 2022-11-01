@@ -1,0 +1,625 @@
+
+20-09-2022 19:42:05 --- [20-09-2022, 19:42:05] Error for cl - for user stefaniebuddzusvoi1 - EOFError
+!---!
+
+20-09-2022 19:42:05 --- LOGIN COMPLETED: 1 SUCCEEDED | 1 FAILED
+!---!
+
+20-09-2022 19:42:27 --- SCRAPER STARTING
+!---!
+
+20-09-2022 19:42:43 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:42:43 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:42:52 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:42:52 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:43:10 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:43:10 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:43:19 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:43:19 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:43:28 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:43:28 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:43:37 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:43:37 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:43:46 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:43:46 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:43:55 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:43:55 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:44:03 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:44:03 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:44:13 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:44:13 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:44:23 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:44:23 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:44:32 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:44:32 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:44:42 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:44:42 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:44:51 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:44:51 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:45:13 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:45:13 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:45:23 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:45:23 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:45:31 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:45:31 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:45:48 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:45:48 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:45:57 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:45:57 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:46:07 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:46:07 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:46:16 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:46:16 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:46:24 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:46:24 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:46:33 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:46:33 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:46:52 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:46:52 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:47:01 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:47:01 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:47:10 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:47:10 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:47:19 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:47:19 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:47:28 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:47:28 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:47:38 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:47:38 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:47:48 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:47:48 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:47:57 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:47:57 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:48:06 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:48:06 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:48:15 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:48:15 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:48:33 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:48:33 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:48:42 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:48:42 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:48:50 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:48:50 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:49:00 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:49:00 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:49:10 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:49:10 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:49:19 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:49:19 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:49:28 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:49:28 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:49:37 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:49:37 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:49:46 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:49:46 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:49:55 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:49:55 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:50:04 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:50:04 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:50:14 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:50:14 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:50:23 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:50:23 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:50:33 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:50:33 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:50:42 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:50:42 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:50:53 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:50:53 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:51:02 --- ERROR IN adduser
+!---!
+
+20-09-2022 19:51:02 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 292, in make_list
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!
+
+20-09-2022 19:51:19 --- 1205812153 of layer 1 yielded 100 new users
+!---!
+
+20-09-2022 19:51:31 --- Traceback (most recent call last):
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\main.py", line 60, in initialize_scraper
+    id.make_list(use_log=True, db_reconnect=DB_RECONNECT_S, gfl_filter=GFL_FILTER)
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 282, in make_list
+    new_user_ids = self.expandreach(followerid, layer)
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 245, in expandreach
+    self.pop_account_error()
+  File "C:\Users\DavWi\OneDrive\Desktop\projects\idww\modules\instadata.py", line 142, in pop_account_error
+    del self.error_account_map[crnt_acc.username]["errors"][0]
+IndexError: list assignment index out of range
+
+!---!

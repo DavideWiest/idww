@@ -77,4 +77,3 @@ def latest_logs(request):
         resp = {"sstatus": "error", "error": str(traceback.format_exc())}
     return Response(resp)
 
-    
