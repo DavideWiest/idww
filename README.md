@@ -3,6 +3,8 @@ integrating with MongoDb, sitarealemail.com, nltk, locator (nominatim) instagram
 
 ### See a demo of the data [HERE](https://docs.google.com/spreadsheets/d/16xKb4klG0WIwSY15tA0E3llbIpev8f57P7cC8LcDwPg/edit?usp=sharing)
 
+![By Davide Wiest](https://github.com/DavideWiest/DavideWiest/blob/main/davidewiest-badge-sm.png?raw=true)
+
 ## What this Scraper can do:
 - #### Collecting Keywords. Hashtags, **E-Mail-Addresses**, **Phone-Numbers**
 - #### **Gender**, **Name** and **Language** analysis
